@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.6.0  # Correct version for checkout
+      - uses: actions/checkout@v2  # Correct version for checkout
       - name: Run as sample job
         run: echo "This is a sample job running after code checkout"
 
@@ -18,15 +18,24 @@ jobs:
         run: echo "This is a sample file" > sample.txt
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v2  # Correct version for upload-artifact
         with:
-          name: sample-artifact
+          name: sample-artifact  # The artifact name is 'sample-artifact'
           path: sample.txt
+
   deploy:
     runs-on: ubuntu-latest
-    needs: build
-    steps: 
-      - uses: actions/download-artifact@v4.6.0
+    needs: build  # Ensures deploy only runs after the build job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2  # Correct version for download-artifact
         with:
-          name: build=artifact
-          path: ${{github.workspace}}
+          name: sample-artifact  # The name must match the uploaded artifact
+          path: ${{ github.workspace }}
+      
+      - name: Display downloaded files
+        run: |
+          echo "Files in the workspace:"
+          ls ${{ github.workspace }}
