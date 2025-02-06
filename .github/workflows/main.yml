@@ -1,13 +1,14 @@
 name: demo-action
 
-on :
-  push :
-    branches : main
+on:
+  push:
+    branches:
+      - main
 
-jobs :
-  build : 
-    runs-on :   ubuntu-latest
-    steps :
-      - uses : actions/checkout@v4.2.2
-      - name: rus as sample job
-    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2  # Correct version for checkout
+      - name: Run as sample job
+        run: echo "This is a sample job running after code checkout"
