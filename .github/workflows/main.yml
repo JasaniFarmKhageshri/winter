@@ -1,15 +1,24 @@
-name: demo-action
+name: Upload Artifact Example
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch :
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2  # Correct version for checkout
-      - name: Run as sample job
-        run: echo "This is a sample job running after code checkout"
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Build project
+        run: |
+          mkdir -p build
+          echo "Build successful!" > build/output.txt
+        
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-output
+          path: build/
